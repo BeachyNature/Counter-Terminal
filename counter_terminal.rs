@@ -39,31 +39,27 @@ impl App {
     }
 }
 
-impl Widget for &App{
+impl Widget for &App {
     fn render(self, area: Rect, buf: &mut Buffer) {
         let title = Line::from(" Counter App ".bold());
         let instructions = Line::from(vec![
             " Decrement ".into(),
-            " <Left>".blue().bold(),
+            "<Left>".blue().bold(),
             " Increment ".into(),
-            " <Right>".blue().bold(),
+            "<Right>".blue().bold(),
             " Quit ".into(),
-            " <Q> ".blue().bold(),
+            "<Q> ".blue().bold(),
         ]);
-
-        // Place items in the center of the block
         let block = Block::bordered()
             .title(title.centered())
             .title_bottom(instructions.centered())
             .border_set(border::THICK);
 
-        // Distinquish the counter text at the title_bottom
         let counter_text = Text::from(vec![Line::from(vec![
             "Value: ".into(),
             self.counter.to_string().yellow(),
         ])]);
 
-        // Place items in a Paragraph widget and render at the bottm of the block
         Paragraph::new(counter_text)
             .centered()
             .block(block)
@@ -80,20 +76,21 @@ fn main() -> io::Result<()> {
     app_result
 }
 
+
 #[cfg(test)]
 mod tests {
-        use super::*;
-        use ratatui::style::Style;
+    use super::*;
+    use ratatui::style::Style;
 
-        #[test]
-        fn render() {
+    #[test]
+    fn render() {
         let app = App::default();
         let mut buf = Buffer::empty(Rect::new(0, 0, 50, 4));
 
         app.render(buf.area, &mut buf);
 
         let mut expected = Buffer::with_lines(vec![
-            "┏━━━━━━━━━━━━━ Counter App Tutorial ━━━━━━━━━━━━━┓",
+            "┏━━━━━━━━━━━━━━━━━ Counter App ━━━━━━━━━━━━━━━━━━┓",
             "┃                    Value: 0                    ┃",
             "┃                                                ┃",
             "┗━ Decrement <Left> Increment <Right> Quit <Q> ━━┛",
@@ -101,7 +98,7 @@ mod tests {
         let title_style = Style::new().bold();
         let counter_style = Style::new().yellow();
         let key_style = Style::new().blue().bold();
-        expected.set_style(Rect::new(14, 0, 22, 1), title_style);
+        expected.set_style(Rect::new(18, 0, 13, 1), title_style);
         expected.set_style(Rect::new(28, 1, 1, 1), counter_style);
         expected.set_style(Rect::new(13, 3, 6, 1), key_style);
         expected.set_style(Rect::new(30, 3, 7, 1), key_style);
@@ -110,6 +107,4 @@ mod tests {
         assert_eq!(buf, expected);
     }
 }
-
-
 
